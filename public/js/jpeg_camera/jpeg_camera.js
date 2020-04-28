@@ -321,7 +321,8 @@
         success = function(stream) {
           that._remove_message();
           if (window.URL) {
-            that.video.src = URL.createObjectURL(stream);
+            that.video.srcObject = stream;
+            //that.video.src = URL.createObjectURL(stream);
           } else {
             that.video.src = stream;
           }

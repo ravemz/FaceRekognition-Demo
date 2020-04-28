@@ -33,13 +33,18 @@ $(document).ready(function() {
       $("#loading_img").show();
       snapshot.upload({api_url: api_url}).done(function(response) {
         var data = JSON.parse(response);
-        if (data.id !== undefined) {
-          $("#upload_result").html(data.message + ": " + data.id + ", Confidence: " + data.confidence);
+        console.log(data);
+        if (data.length) {
+          var html_data = '';
+          for(var i=0; i<data.length;i++) {
+            html_data += data[i].message + ": " + data[i].id + ", Confidence: " + data[i].confidence + "<br/>";
+          }
+          $("#upload_result").html(html_data);
           // create speech response
-          $.post("/speech", {tosay: "Good " + greetingTime(moment()) + " " + data.id}, function(response) {
-            $("#audio_speech").attr("src", "data:audio/mpeg;base64," + response);
-            $("#audio_speech")[0].play();
-          });
+          // $.post("/speech", {tosay: "Good " + greetingTime(moment()) + " " + data.id}, function(response) {
+          //   $("#audio_speech").attr("src", "data:audio/mpeg;base64," + response);
+          //   $("#audio_speech")[0].play();
+          // });
         } else {
           $("#upload_result").html(data.message);
         }
@@ -54,19 +59,19 @@ $(document).ready(function() {
 
     var greetingTime = function(moment) {
       var greet = null;
-      
+
       if(!moment || !moment.isValid()) { return; } //if we can't find a valid or filled moment, we return.
             var split_afternoon = 12 //24hr time to split the afternoon
       var split_evening = 17 //24hr time to split the evening
       var currentHour = parseFloat(moment.format("HH"));
-      
+
       if(currentHour >= split_afternoon && currentHour <= split_evening) {
         greet = "afternoon";
       } else if(currentHour >= split_evening) {
         greet = "evening";
       } else {
         greet = "morning";
-      }      
+      }
       return greet;
     }
 
@@ -80,7 +85,7 @@ $(document).ready(function() {
       shutter_mp3_url: "js/jpeg_camera/shutter.mp3",
       swf_url: "js/jpeg_camera/jpeg_camera.swf"
     }
-    
+
 
     camera = new JpegCamera("#camera", options).ready(function(info) {
       $("#loading_img").hide();
