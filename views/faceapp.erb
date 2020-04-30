@@ -1,39 +1,50 @@
 <html>
   <head>
     <title>Face Recognition Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="css/camera.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <h1>Face Recognition Test</h1>
-    <div id='camera'>
-      <div id='placeholder'>
-        <p>Your browser does not support a camera!</p>
+    <div id="container">
+      <h1>Face ID Test</h1>
+
+      <div style="padding-top: 15px;" id="video_stream">
+        <video autoplay muted playsinline></video>
       </div>
+
+      <div style="padding-top: 15px; display: none;" id="screenshot-div">
+        <img id="screenshot-img">
+      </div>
+
+      <br />
+
+      <p>
+        <button id='capture_search' class="capture-button">Capture and Search</button>
+        <button id='capture_reset' class="capture-button">Reset</button>
+        <label for="videoSource">Video source: </label><select id="videoSource"></select>
+        <!--<button id='capture_image' class="capture-button">Capture</button>-->
+      </p>
+      <input id='photo_id' placeholder='Enter name for photo without space' type='text'>
+      <button id='capture_add' class="capture-button">Capture & Add To Collection</button>
+      <br>
+      <br>
+      <div id='upload_status'></div>
+      <div id='upload_result'></div>
+      <br>
+      <img height='100' id='loading_img' src='images/loading.gif' width='100' style="display: none;">
+      <br>
+      <p>
+        <!--<a href="/collection/create">Create Collection</a> | <a href="/collection/delete">Delete Collection</a>-->
+      </p>
     </div>
-    <br>
-    <p>
-      <button id='compare_image'>Capture and Search in Collection</button>
-    </p>
-    <br>
-    <input id='photo_id' placeholder='Enter name for photo without space' type='text'>
-    <button id='add_to_collection'>Capture & Add To Collection</button>
-    <br>
-    <div id='upload_status'></div>
-    <div id='upload_result'></div>
-    <br>
-    <img height='100' id='loading_img' src='images/loading.gif' width='100'>
-    <audio id='audio_speech' src='#'></audio>
-    <br>
-    <br>
-    <p>
-      <!--<a href="/collection/create">Create Collection</a> | <a href="/collection/delete">Delete Collection</a>-->
-    </p>
+
     <script src='https://code.jquery.com/jquery-3.1.1.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
     <!--<script src="js/jpeg_camera/swfobject.min.js" type="text/javascript"></script>
     <script src="js/jpeg_camera/canvas-to-blob.min.js" type="text/javascript"></script>
     <script src="js/jpeg_camera/jpeg_camera.js" type="text/javascript"></script>-->
-    <script src="js/jpeg_camera/jpeg_camera_with_dependencies.min.js" type="text/javascript"></script>
-    <script src="js/faceapp.js" type="text/javascript"></script>
+    <!--<script src="js/jpeg_camera/jpeg_camera_with_dependencies.min.js" type="text/javascript"></script>
+    <script src="js/faceapp.js" type="text/javascript"></script>-->
+    <script src="js/main.js" type="text/javascript"></script>
   </body>
 </html>

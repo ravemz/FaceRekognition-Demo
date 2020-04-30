@@ -24,6 +24,7 @@ end
 
 
 post '/upload/:photoid' do
+
   client = Aws::Rekognition::Client.new()
   response = client.index_faces({
     collection_id: FACE_COLLECTION,
@@ -38,6 +39,7 @@ end
 
 post '/compare' do
   content_type :json
+
   client = Aws::Rekognition::Client.new()
   response = client.search_faces_by_image({
     collection_id: FACE_COLLECTION,
@@ -50,7 +52,6 @@ post '/compare' do
   if response.face_matches.count == 0
     {:message => "No face detected!"}.to_json
   else
-    # "Comparison finished - detected #{ response.face_matches[0].face.external_image_id } with #{ response.face_matches[0].face.confidence } accuracy."
     resp_hash = []
     response.face_matches.each do |face_match|
       resp_hash << {:id => face_match.face.external_image_id, :confidence => face_match.face.confidence, :message => "Face found!"}
