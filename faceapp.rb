@@ -3,6 +3,7 @@ require 'rubygems'
 require 'bundler'
 Bundler.require
 require 'sinatra'
+require 'sinatra/reloader' if development?
 
 # Load up all our secrets
 Dotenv.load

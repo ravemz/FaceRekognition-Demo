@@ -37,7 +37,7 @@ button {
 video {
   background: #222;
   width: 100%;
-  border: 2px solid red;
+  border: 3px solid red;
 }
 
 select {
@@ -48,7 +48,7 @@ select {
 
 img#screenshot-img {
   width: 100%;
-  border: 2px solid black;
+  border: 3px solid green;
 }
 
 .capture-button {
