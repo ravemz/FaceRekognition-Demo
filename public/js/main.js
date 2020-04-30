@@ -1,13 +1,22 @@
 'use strict';
 
 var videoElement = document.querySelector('video');
-var videoSelect = document.querySelector('select#videoSource');
 const canvas = document.createElement('canvas');
+var devicesArray = [];
+var currentDeviceIndex = 0;
 
 $(document).ready(function() {
-  videoSelect.onchange = getStream;
-
   getStream().then(getDevices).then(gotDevices);
+
+  document.querySelector('#switch_camera').onclick = function() {
+    if(currentDeviceIndex == 0) {
+      getStream(1);
+    } else {
+      getStream(0);
+    }
+  };
+
+  document.querySelector('#capture_image').onclick = captureImage;
 
   document.querySelector('#capture_reset').onclick = function() {
     $("#screenshot-div").hide();
@@ -94,25 +103,33 @@ function getDevices() {
 function gotDevices(deviceInfos) {
   window.deviceInfos = deviceInfos; // make available to console
   console.log('Available input and output devices:', deviceInfos);
+  var i = 1;
   for (const deviceInfo of deviceInfos) {
-    const option = document.createElement('option');
-    option.value = deviceInfo.deviceId;
     if (deviceInfo.kind === 'videoinput') {
-      option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
-      videoSelect.appendChild(option);
+      var label = deviceInfo.label || `Camera ${i}`;
+      devicesArray.push({id: deviceInfo.deviceId, label: label});
     }
+    i++;
+  }
+
+  if(devicesArray.length > 1) {
+    $("#switch_camera").show();
   }
 }
 
-function getStream() {
+function getStream(deviceIndex) {
+  if(!deviceIndex) deviceIndex = 0;
+
+  currentDeviceIndex = deviceIndex;
+
   if (window.stream) {
     window.stream.getTracks().forEach(track => {
       track.stop();
     });
   }
-  const videoSource = videoSelect.value;
+  const videoSource = devicesArray[deviceIndex];
   const constraints = {
-    video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+    video: {deviceId: videoSource ? {exact: videoSource['id']} : undefined}
   };
   return navigator.mediaDevices.getUserMedia(constraints).
     then(gotStream).catch(handleError);
@@ -120,8 +137,6 @@ function getStream() {
 
 function gotStream(stream) {
   window.stream = stream; // make stream available to console
-  videoSelect.selectedIndex = [...videoSelect.options].
-    findIndex(option => option.text === stream.getVideoTracks()[0].label);
   videoElement.srcObject = stream;
 }
 
